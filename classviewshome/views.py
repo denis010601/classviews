@@ -1,5 +1,8 @@
 from django.contrib.auth import login
 from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
 from .models import *
@@ -27,7 +30,7 @@ class ArticleDetailView(DetailView):
         return context
 
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin,CreateView):
     model = Article
     form_class = ArticleForm
     success_url = '/articles/'
@@ -50,7 +53,33 @@ class UserCreateView(CreateView):
         login(self.request, user)
         return super().form_valid(form)
 
+"""
+ class ProfileView(TemplateView):
+    template_name = 'classviewshome/profile.html'
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
+"""
+
+
+
+class ProfileView(LoginRequiredMixin ,TemplateView):
+    template_name = 'classviewshome/profile.html'
+
+    # @method_decorator(login_required)
+    # def dispatch(self, *args, **kwargs):
+    #     return super().dispatch(*args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context
 
 # class BookListView(ListView):
 #     model = Book
