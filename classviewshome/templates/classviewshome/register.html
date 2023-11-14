@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>Регистрация нового пользователя</h1>
-    <form  method="post">
-        {% csrf_token %}
-        <div class="">
-            {{ form.full_name.label }}
+{% extends 'base.html' %}
+{% block content %}
+<h1>Регистрация нового пользователя</h1>
+<form  method="post">
+    {% csrf_token %}
+    <div class="">
+        {{ form.full_name.label }}
             {{ form.full_name }}
         </div>
         <div class="">
@@ -25,11 +20,10 @@
             {{ form.password1 }}
             {{ form.password2.label }}
             {{ form.password2 }}
-
+            
         </div>
         {{ form.errors }}
 
         <button type="submit">Зарегистрироваться</button>
     </form>
-</body>
-</html>
+{% endblock content %}
